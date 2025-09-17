@@ -1,0 +1,10 @@
+README.md
+setup.py
+newa_nlp/__init__.py
+newa_nlp/__main__.py
+newa_nlp/corpus.py
+newa_nlp.egg-info/PKG-INFO
+newa_nlp.egg-info/SOURCES.txt
+newa_nlp.egg-info/dependency_links.txt
+newa_nlp.egg-info/requires.txt
+newa_nlp.egg-info/top_level.txt

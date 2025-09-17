@@ -1,0 +1,4 @@
+data/
+refs/
+*.csv
+__pycache__/

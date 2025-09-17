@@ -1,0 +1,88 @@
+Metadata-Version: 2.1
+Name: newa-nlp
+Version: 0.1.0
+Summary: A Python library for Newari Natural Language Processing tasks
+Home-page: 
+Author: Newa NLP Team
+Author-email: 
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Text Processing :: Linguistic
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+
+# Newa NLP
+
+A Python library for Newari Natural Language Processing tasks.
+
+## Installation
+
+```bash
+pip install -e .
+```
+
+## Features
+
+### Corpus Processing
+
+#### Create Corpus CSV
+
+Convert a directory of text files into a CSV format with filename and content columns.
+
+```python
+from newa_nlp import create_corpus_csv
+
+# Basic usage
+create_corpus_csv("data/corpus", "output/corpus_data.csv")
+
+# With progress callback
+def progress_callback(current, total, message):
+    print(f"Progress: {current}/{total} - {message}")
+
+create_corpus_csv("data/corpus", "output/corpus_data.csv", progress_callback)
+```
+
+#### Get Corpus Statistics
+
+Get information about your corpus directory.
+
+```python
+from newa_nlp.corpus import get_corpus_stats
+
+stats = get_corpus_stats("data/corpus")
+print(f"File count: {stats['file_count']}")
+print(f"Total size: {stats['total_size']} bytes")
+print(f"Average file size: {stats['average_size']} bytes")
+```
+
+## Development
+
+Install development dependencies:
+
+```bash
+pip install -e ".[dev]"
+```
+
+Run tests:
+
+```bash
+pytest
+```
+
+## License
+
+MIT License
