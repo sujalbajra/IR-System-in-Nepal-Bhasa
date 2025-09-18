@@ -41,6 +41,13 @@ from .search import (
     create_search_engine,
 )
 
+# Import embeddings utilities
+from .embeddings import (
+    SentenceEncoder,
+    cosine_similarity,
+    top_k_similar,
+)
+
 __all__ = [
     # Corpus utilities
     "on_progress",
@@ -67,4 +74,9 @@ __all__ = [
     # Search engine
     "SearchEngine",
     "create_search_engine",
+
+    # Embeddings utilities
+    "SentenceEncoder",
+    "cosine_similarity",
+    "top_k_similar",
 ]
