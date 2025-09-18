@@ -10,6 +10,8 @@ from collections import Counter
 from pathlib import Path
 from typing import Optional, Callable, Iterable, List, Tuple
 
+from .tokenizer import tokenize_text
+
 
 def on_progress(current: int, total: int, message: str) -> None:
     """
@@ -137,21 +139,7 @@ def get_corpus_stats(corpus_dir: str) -> dict:
 
 # -------------------- Unigram utilities --------------------
 
-def _tokenize(text: str, mode: str = "space", pattern: Optional[str] = None) -> List[str]:
-    """
-    Tokenize text either by spaces or using a regex pattern.
-    - mode="space": split on whitespace
-    - mode="regex": use provided pattern or a default word pattern
-    """
-    if mode not in {"space", "regex"}:
-        raise ValueError("mode must be 'space' or 'regex'")
-    if mode == "space":
-        return [t for t in text.split() if t]
-    # default regex: Devanagari characters excluding danda (।) and other punctuation
-    # This matches your notebook pattern: [\u0900-\u0963\u0965-\u097F]+
-    default_pattern = r"[\u0900-\u0963\u0965-\u097F]+"
-    compiled = re.compile(pattern or default_pattern)
-    return compiled.findall(text)
+# Removed _tokenize function - now using tokenize_text from tokenizer module
 
 
 def _devanagari_sort_key(token: str) -> Tuple:
@@ -164,7 +152,7 @@ def _devanagari_sort_key(token: str) -> Tuple:
 
 def build_unigram(
     texts: Iterable[str],
-    tokenizer_mode: str = "space",
+    tokenizer_mode: str = "regex",
     regex_pattern: Optional[str] = None,
     sort_by: str = "freq",
     top_k: Optional[int] = None,
@@ -174,7 +162,7 @@ def build_unigram(
     
     Args:
         texts: Iterable of input strings
-        tokenizer_mode: 'space' or 'regex'
+        tokenizer_mode: 'space' or 'regex' (default: 'regex' for Devanagari)
         regex_pattern: custom regex when tokenizer_mode='regex'
         sort_by: 'freq' or 'dev'
         top_k: if provided, return only top_k items after sorting
@@ -186,7 +174,7 @@ def build_unigram(
     for text in texts:
         if not text or not text.strip():
             continue
-        tokens = _tokenize(text, mode=tokenizer_mode, pattern=regex_pattern)
+        tokens = tokenize_text(text, mode=tokenizer_mode, pattern=regex_pattern)
         # Filter out empty tokens
         tokens = [t for t in tokens if t and t.strip()]
         if not tokens:
@@ -209,7 +197,7 @@ def build_unigram(
 def build_unigram_from_csv(
     csv_path: str,
     content_column: str = "content",
-    tokenizer_mode: str = "space",
+    tokenizer_mode: str = "regex",
     regex_pattern: Optional[str] = None,
     sort_by: str = "freq",
     top_k: Optional[int] = None,
@@ -220,7 +208,7 @@ def build_unigram_from_csv(
     Args:
         csv_path: Path to CSV file
         content_column: Name of the column containing text content
-        tokenizer_mode: 'space' or 'regex'
+        tokenizer_mode: 'space' or 'regex' (default: 'regex' for Devanagari)
         regex_pattern: custom regex when tokenizer_mode='regex'
         sort_by: 'freq' or 'dev'
         top_k: if provided, return only top_k items after sorting
